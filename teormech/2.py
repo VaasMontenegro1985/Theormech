@@ -22,19 +22,18 @@ def create_axis(x, y):
     grf.add_patch(axis)
     return [mesh, axis]
 
-m1, m2, m3, m4 = 10, 3, 0.1, 1
+
+m1, m2, m3, m4 = 10, 3, 2, 1
 g = 9.81
 alpha = np.radians(15)
 F0, omega = 3, 0.5
-speed_multiplier = 3.5
 
 theta = np.arctan2(-3, 4)
 
 t_eval = np.linspace(0, 20, 500)
 A = 2.0
-omega = 0.5
 x_vals = A * np.sin(omega * t_eval) 
-s_vals =A * np.sin(omega * t_eval)
+s_vals = A * np.sin(omega * t_eval)
 
 
 fgr, grf = plt.subplots()
