@@ -22,7 +22,7 @@ def create_axis(x, y):
     grf.add_patch(axis)
     return [mesh, axis]
 
-m1, m2, m3, m4 = 10, 5, 0.01, 1
+m1, m2, m3, m4 = 10, 3, 0.01, 1
 g = 9.81
 alpha = np.radians(15)
 F0, omega = 3, 0.5
@@ -118,8 +118,8 @@ big_circle = Circle((-1, 8.8), radius=0.8, fill=False, edgecolor='red')
 grf.add_patch(little_circle)
 grf.add_patch(big_circle)
 
-cylinder = Polygon([(0, 0), (0.6, 0), (0.6, 0.4), (0, 0.4)], closed=True, fill=False, edgecolor='#E1592F')
-grf.add_patch(cylinder)
+block = Polygon([(0, 0), (0.6, 0), (0.6, 0.4), (0, 0.4)], closed=True, fill=False, edgecolor='#E1592F')
+grf.add_patch(block)
 
 [line1] = grf.plot([0, 0], [0, 0], color='black')
 [line2] = grf.plot([0, 0], [0, 0], color='black')
@@ -128,7 +128,7 @@ direction_vector = np.array([-4, 3]) / 5
 
 info_text = grf.text(0.95, 0.95, '', transform=grf.transAxes, ha='right', va='top', fontsize=10)
 
-def rotate_cylinder(base_center, width, height, theta):
+def rotate_block(base_center, width, height, theta):
     local_mesh = np.array([
         [-width / 2, 0],
         [width / 2, 0],
@@ -160,14 +160,14 @@ def move_cart(dx, ds):
     pillar.set_xy(pillar_xy)
     little_circle.center = (2.6 + dx, 8.4)
 
-def update_rope(cylinder_mesh):
-    cylinder_center = cylinder_mesh.mean(axis=0)
+def update_rope(block_mesh):
+    block_center = block_mesh.mean(axis=0)
 
     line1.set_xdata([little_circle.center[0], big_circle.center[0]])
     line1.set_ydata([little_circle.center[1] + 0.4, big_circle.center[1]])
 
-    line2.set_xdata([little_circle.center[0], cylinder_center[0]])
-    line2.set_ydata([little_circle.center[1] + 0.4, cylinder_center[1]])
+    line2.set_xdata([little_circle.center[0], block_center[0]])
+    line2.set_ydata([little_circle.center[1] + 0.4, block_center[1]])
 
 def show_info(t, x, dx, ddx, s, ds, dds):
     text = f"t={t:.2f}\n"
@@ -186,13 +186,13 @@ def anim(i):
     big_circle.center = (-0.8 + dx + horizontal_offset, 8.8)
 
     rect_base_center = np.array([3 + dx, 8]) + (ds - 3) * direction_vector
-    cylinder_mesh_transformed = rotate_cylinder(rect_base_center, 1.2, 0.6, theta)
-    cylinder.set_xy(cylinder_mesh_transformed)
+    block_mesh_transformed = rotate_block(rect_base_center, 1.2, 0.6, theta)
+    block.set_xy(block_mesh_transformed)
 
-    update_rope(cylinder_mesh_transformed)
+    update_rope(block_mesh_transformed)
     show_info(t, x_sol[i], dx_sol[i], ddx, s_sol[i], ds_sol[i], dds)
 
-    return wheel1, wheel2, body, axis1, axis2, pillar, little_circle, big_circle, cylinder
+    return wheel1, wheel2, body, axis1, axis2, pillar, little_circle, big_circle, block
 
 grf.set_xlim(-5, 10)
 grf.set_ylim(0, 10)
